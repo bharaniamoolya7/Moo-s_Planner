@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { useToast } from '../context/ToastContext';
 import PixelAvatar, { AVATAR_OPTIONS } from '../components/PixelAvatar';
 import './Signup.css';
@@ -8,6 +9,7 @@ import './Signup.css';
 export default function Signup() {
   const [step, setStep] = useState(1); // 1 = account, 2 = avatar
   const [displayName, setDisplayName] = useState('');
+  const [plannerTitle, setPlannerTitle] = useState(localStorage.getItem('moosplanner_custom_title') || "moo'splanner");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -15,16 +17,22 @@ export default function Signup() {
   const [avatarConfig, setAvatarConfig] = useState({
     gender: 'girl',
     skinColor: AVATAR_OPTIONS.SKIN_COLORS[0],
-    hairColor: AVATAR_OPTIONS.HAIR_COLORS[0],
-    hairStyle: 'long',
-    outfitColor: AVATAR_OPTIONS.OUTFIT_COLORS[0],
-    eyeStyle: 'dot',
-    accessory: 'none',
+    hairColor: '#333333', // Dark black hair as shown in screenshot
+    hairStyle: 'bob',     // Bob style as shown in screenshot
+    outfitColor: '#E0D4F5',
+    eyeStyle: 'sparkle',  // Sparkle eyes as shown in screenshot
+    accessory: 'bow',     // Pink hair bow as shown in screenshot
   });
 
   const { signup, updateUser } = useAuth();
+  const { setTheme } = useTheme();
   const { showToast } = useToast();
   const navigate = useNavigate();
+
+  // Set strawberry pink theme while creating account
+  useEffect(() => {
+    setTheme('strawberry');
+  }, []);
 
   const handleNextStep = (e) => {
     e.preventDefault();
@@ -41,16 +49,19 @@ export default function Signup() {
 
   const handleSignup = async () => {
     setLoading(true);
+    setTheme('strawberry');
     const result = await signup(displayName, email, password);
     if (result.success) {
+      setTheme('strawberry');
+      localStorage.setItem('moosplanner_theme', 'strawberry');
       // Save avatar config
       try {
         const { default: api } = await import('../services/api');
         await api.put(`/api/users/${result.user.id}/avatar`, avatarConfig);
-        updateUser({ ...result.user, avatarConfig });
+        updateUser({ ...result.user, avatarConfig, theme: 'strawberry' });
       } catch {
         // Avatar save failed but account created - still continue
-        updateUser({ ...result.user, avatarConfig });
+        updateUser({ ...result.user, avatarConfig, theme: 'strawberry' });
       }
       showToast("Welcome to moo'splanner! ♡");
       navigate('/dashboard');
@@ -81,7 +92,7 @@ export default function Signup() {
           {/* Left side - Avatar Preview */}
           <div className="signup-left">
             <span className="signup-star-decor">✦</span>
-            
+
             <div className="pixel-mirror">
               <div className="pixel-mirror-header">
                 <span>✧ PIXEL MIRROR ✧</span>
@@ -239,7 +250,7 @@ export default function Signup() {
                   <div className="avatar-option-group">
                     <label className="input-label">Hair Style</label>
                     <div className="style-picker-row">
-                      {(avatarConfig.gender === 'boy' 
+                      {(avatarConfig.gender === 'boy'
                         ? ['spiky', 'slick_back', 'crew_cut', 'side_part', 'fluffy', 'cap']
                         : ['twin_tails', 'bob', 'long', 'spiky', 'cap']
                       ).map(s => (

@@ -1,7 +1,13 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import AboutModal from '../components/AboutModal';
+import SupportModal from '../components/SupportModal';
 import './Welcome.css';
 
 export default function Welcome() {
+  const [showAbout, setShowAbout] = useState(false);
+  const [showSupport, setShowSupport] = useState(false);
+
   return (
     <div className="welcome-page">
       {/* Background decorations - isometric room corners */}
@@ -55,11 +61,26 @@ export default function Welcome() {
       <footer className="welcome-footer">
         <span className="welcome-footer-brand">☾ moo'splanner</span>
         <div className="welcome-footer-links">
-          <a href="#about">About</a>
-          <a href="#github">GitHub</a>
-          <a href="#support">Support</a>
+          <button 
+            type="button" 
+            className="footer-link-btn"
+            onClick={() => setShowAbout(true)}
+          >
+            About
+          </button>
+          <button 
+            type="button" 
+            className="footer-link-btn"
+            onClick={() => setShowSupport(true)}
+          >
+            Support
+          </button>
         </div>
       </footer>
+
+      {/* Modals */}
+      <AboutModal isOpen={showAbout} onClose={() => setShowAbout(false)} />
+      <SupportModal isOpen={showSupport} onClose={() => setShowSupport(false)} />
     </div>
   );
 }

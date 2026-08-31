@@ -161,14 +161,21 @@
   gap: 24px;
 }
 
-.welcome-footer-links a {
+.welcome-footer-links a,
+.footer-link-btn {
   font-family: var(--font-pixel);
   font-size: 10px;
   color: var(--brown-text);
   text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
 }
 
-.welcome-footer-links a:hover {
+.welcome-footer-links a:hover,
+.footer-link-btn:hover {
   color: var(--mauve);
 }
 

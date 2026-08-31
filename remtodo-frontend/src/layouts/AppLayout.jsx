@@ -2,6 +2,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import PixelAvatar from '../components/PixelAvatar';
+import { QuickThemeToggle } from '../components/ThemeSelector';
 import './AppLayout.css';
 
 const NAV_ITEMS = [
@@ -9,6 +10,7 @@ const NAV_ITEMS = [
   { path: '/tasks', label: 'Tasks', icon: '✓' },
   { path: '/notes', label: 'Notes', icon: '📝' },
   { path: '/reminders', label: 'Reminders', icon: '🔔' },
+  { path: '/vault', label: 'Doc Vault', icon: '📦' },
   { path: '/learning', label: 'Learning Hub', icon: '📚' },
   { path: '/coding', label: 'Coding Lab', icon: '◇' },
   { path: '/goals', label: 'Goals', icon: '⭐' },
@@ -19,11 +21,38 @@ const NAV_ITEMS = [
 ];
 
 export default function AppLayout() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Custom planner title state
+  const [plannerName, setPlannerName] = useState(() => {
+    return localStorage.getItem('moosplanner_custom_title') || "moo'splanner";
+  });
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [tempTitle, setTempTitle] = useState(plannerName);
+
   const avatarConfig = user?.avatarConfig || {};
+
+  const handleSaveTitle = (e) => {
+    if (e) e.stopPropagation();
+    const trimmed = tempTitle.trim();
+    const finalTitle = trimmed.length > 0 ? trimmed : "moo'splanner";
+    setPlannerName(finalTitle);
+    localStorage.setItem('moosplanner_custom_title', finalTitle);
+    setIsEditingTitle(false);
+  };
+
+  const handleStartEdit = (e) => {
+    e.stopPropagation();
+    setIsEditingTitle(true);
+    setTempTitle(plannerName);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <div className="app-layout">
@@ -32,21 +61,108 @@ export default function AppLayout() {
         <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           {mobileMenuOpen ? '✕' : '☰'}
         </button>
-        <span className="mobile-brand">moo'splanner</span>
-        <div className="mobile-avatar" onClick={() => navigate('/profile')}>
-          <PixelAvatar config={avatarConfig} size={32} />
+        <span 
+          className="mobile-brand"
+          onClick={handleStartEdit}
+          title="Click to rename your planner"
+          style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+        >
+          {plannerName}
+          <span style={{ fontSize: '10px', opacity: 0.6 }}>✏️</span>
+        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ width: '120px' }}>
+            <QuickThemeToggle />
+          </div>
+          <div className="mobile-avatar" onClick={() => navigate('/profile')}>
+            <PixelAvatar config={avatarConfig} size={32} />
+          </div>
         </div>
       </div>
 
       {/* Sidebar */}
       <aside className={`sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         {/* Profile section */}
-        <div className="sidebar-profile" onClick={() => { navigate('/profile'); setMobileMenuOpen(false); }}>
-          <div className="sidebar-avatar">
+        <div className="sidebar-profile">
+          <div 
+            className="sidebar-avatar" 
+            onClick={() => { navigate('/profile'); setMobileMenuOpen(false); }}
+            title="View Profile"
+            style={{ cursor: 'pointer' }}
+          >
             <PixelAvatar config={avatarConfig} size={56} />
           </div>
-          <div className="sidebar-brand">moo'splanner</div>
-          <div className="sidebar-username">
+
+          {/* Editable Planner Name */}
+          <div style={{ marginTop: '6px' }}>
+            {isEditingTitle ? (
+              <div style={{ display: 'flex', gap: '4px', justifyContent: 'center', alignItems: 'center', margin: '4px 0' }}>
+                <input
+                  type="text"
+                  value={tempTitle}
+                  onChange={e => setTempTitle(e.target.value)}
+                  onKeyDown={e => { 
+                    if (e.key === 'Enter') handleSaveTitle(e); 
+                    else if (e.key === 'Escape') setIsEditingTitle(false); 
+                  }}
+                  autoFocus
+                  placeholder="Planner Name..."
+                  style={{
+                    fontFamily: 'var(--font-retro)',
+                    fontSize: '15px',
+                    padding: '2px 6px',
+                    width: '120px',
+                    textAlign: 'center',
+                    border: '2px solid var(--border-dark)',
+                    borderRadius: '4px',
+                    background: 'var(--white)',
+                    color: 'var(--brown-text)'
+                  }}
+                />
+                <button 
+                  type="button"
+                  onClick={handleSaveTitle} 
+                  title="Save Name"
+                  style={{
+                    fontFamily: 'var(--font-pixel)',
+                    fontSize: '9px',
+                    padding: '4px 6px',
+                    background: 'var(--pink-header)',
+                    color: '#fff',
+                    border: '1px solid var(--border-dark)',
+                    borderRadius: '3px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  ✓
+                </button>
+              </div>
+            ) : (
+              <div 
+                className="sidebar-brand-wrapper"
+                onClick={handleStartEdit}
+                title="Click to rename your planner"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  cursor: 'pointer',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  transition: 'background 0.2s ease'
+                }}
+              >
+                <span className="sidebar-brand">{plannerName}</span>
+                <span style={{ fontSize: '11px', opacity: 0.6 }} className="edit-icon">✏️</span>
+              </div>
+            )}
+          </div>
+
+          <div 
+            className="sidebar-username"
+            onClick={() => { navigate('/profile'); setMobileMenuOpen(false); }}
+            style={{ cursor: 'pointer' }}
+          >
             {user?.displayName || 'User'}
           </div>
         </div>
@@ -66,10 +182,33 @@ export default function AppLayout() {
           ))}
         </nav>
 
-        {/* New Entry button */}
+        {/* Quick Theme Toggle & Logout button */}
         <div className="sidebar-bottom">
-          <button className="btn btn-pink sidebar-new-btn" onClick={() => { navigate('/tasks'); setMobileMenuOpen(false); }}>
-            + New Entry
+          <div style={{ marginBottom: '10px', width: '100%', textAlign: 'center' }}>
+            <QuickThemeToggle />
+          </div>
+          <button 
+            type="button"
+            className="btn sidebar-logout-btn" 
+            onClick={handleLogout}
+            style={{
+              width: '100%',
+              padding: '8px 12px',
+              fontSize: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              background: '#FFE8E8',
+              border: '2px solid #D9534F',
+              color: '#D9534F',
+              fontFamily: 'var(--font-pixel)',
+              borderRadius: 'var(--radius-pixel)',
+              cursor: 'pointer',
+              boxShadow: '0 2px 0 #D9534F'
+            }}
+          >
+            🚪 Logout
           </button>
         </div>
       </aside>

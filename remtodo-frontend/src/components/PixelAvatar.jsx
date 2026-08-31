@@ -38,8 +38,30 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
     };
 
     const outlineColor = '#2D1B2D'; // Dark retro pixel border
+    const hColor = hairColor;
+    const hDark = outlineColor;
 
-    // --- BODY & OUTFIT (Rows 11..15) ---
+    // --- 1. BACK HAIR (Drawn FIRST behind body, shoulders & head) ---
+    if (gender === 'boy') {
+      // Boy: Short ear-length hair positioned mainly at back and sides (eyes/forehead remain 100% open)
+      fillRect(3, 2, 10, 3, hColor); // Short back hair dome
+      fillRect(3, 3, 1, 4, hColor);  // Ear-length side hair left
+      fillRect(12, 3, 1, 4, hColor); // Ear-length side hair right
+    } else if (hairStyle === 'long') {
+      fillRect(2, 3, 12, 10, hColor); // Long hair falling behind back
+      fillRect(1, 5, 14, 8, hColor);  // Wide hair backdrop
+    } else if (hairStyle === 'bob') {
+      fillRect(2, 3, 12, 7, hColor);  // Bob hair behind back
+      fillRect(1, 5, 14, 5, hColor);
+    } else if (hairStyle === 'twin_tails') {
+      fillRect(3, 2, 10, 4, hColor);
+      fillRect(1, 4, 3, 7, hColor); // Left tail
+      fill(2, 3, '#FF4466'); // Left ribbon
+      fillRect(12, 4, 3, 7, hColor); // Right tail
+      fill(13, 3, '#FF4466'); // Right ribbon
+    }
+
+    // --- 2. BODY & OUTFIT (Drawn OVER back hair so body/shoulders are in front) ---
     // Neck
     fillRect(7, 10, 2, 1, skinColor);
 
@@ -59,25 +81,22 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
       fillRect(7, 11, 2, 1, '#FFFFFF');
     }
 
-    // --- HEAD BASE (Rows 4..10, Columns 4..11) ---
-    fillRect(5, 4, 6, 7, skinColor);
-    fillRect(4, 5, 8, 5, skinColor);
+    // --- 3. FACE & HEAD BASE (Drawn OVER back hair so face & cheeks are clean) ---
+    fillRect(4, 4, 8, 6, skinColor); // Clean forehead & face: rows 4..9, cols 4..11
 
-    // Head outline
-    fillRect(4, 4, 1, 6, outlineColor);
-    fillRect(11, 4, 1, 6, outlineColor);
-    fillRect(5, 3, 6, 1, outlineColor);
+    // Side face outline (Jawline)
+    fill(4, 9, outlineColor); fill(11, 9, outlineColor);
+    fillRect(5, 10, 6, 1, outlineColor); // Chin outline
 
-    // --- EYES (Row 6 & 7) ---
+    // --- 4. EYES, BLUSH & MOUTH ---
     if (eyeStyle === 'wink') {
-      fill(5, 7, outlineColor);
-      fill(6, 7, outlineColor);
-      fill(9, 7, outlineColor); // Winking eye
+      fill(5, 7, outlineColor); fill(6, 7, outlineColor);
+      fill(9, 7, outlineColor);
     } else if (eyeStyle === 'happy') {
       fill(5, 6, outlineColor); fill(6, 6, outlineColor);
       fill(9, 6, outlineColor); fill(10, 6, outlineColor);
     } else if (eyeStyle === 'cool') {
-      fillRect(4, 6, 8, 2, outlineColor); // Cool Sunglasses
+      fillRect(4, 6, 8, 2, outlineColor);
       fill(5, 6, '#FFFFFF'); fill(9, 6, '#FFFFFF');
     } else { // Sparkle cute eyes
       fill(5, 6, outlineColor); fill(5, 7, outlineColor);
@@ -87,78 +106,42 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
     }
 
     // Cute Blush (Row 8)
-    fill(4, 8, '#FF8899');
-    fill(11, 8, '#FF8899');
+    fill(4, 8, '#FF8899'); fill(11, 8, '#FF8899');
 
     // Mouth (Row 9)
-    fill(7, 9, '#E85D75');
-    fill(8, 9, '#E85D75');
+    fill(7, 9, '#E85D75'); fill(8, 9, '#E85D75');
 
-    // --- HAIR STYLES (Eyes at Rows 6-7 stay 100% uncovered) ---
-    const hColor = hairColor;
-    const hDark = outlineColor;
-
+    // --- 5. TOP HAIR DOME & SMALL FRONT FRINGE/BANGS ---
     if (hairStyle === 'spiky') {
-      // Spiky Anime Hair (Points up, high forehead line at row 3 - Eyes open)
-      fillRect(4, 2, 8, 2, hColor);
-      fill(3, 1, hColor); fill(4, 1, hColor);
-      fill(6, 0, hColor); fill(7, 0, hColor);
-      fill(9, 1, hColor); fill(10, 1, hColor);
-      fill(3, 3, hColor); fill(12, 3, hColor);
-      fill(3, 0, hDark); fill(6, -1, hDark); fill(10, 0, hDark);
-    } else if (hairStyle === 'slick_back') {
-      // Sleek Combed-Back Style (High hairline at row 3 - Eyes open)
-      fillRect(4, 2, 8, 2, hColor);
-      fillRect(3, 3, 10, 1, hColor);
-      fill(5, 1, hColor); fill(10, 1, hColor);
-      fill(3, 2, hDark); fill(12, 2, hDark);
-    } else if (hairStyle === 'crew_cut') {
-      // Short Neat Crop / Fade (Clean forehead - Eyes open)
-      fillRect(5, 2, 6, 2, hColor);
-      fillRect(4, 3, 8, 1, hColor);
-      fill(4, 4, hColor); fill(11, 4, hColor);
-    } else if (hairStyle === 'side_part') {
-      // Stylish Side Part (Combed to the side - Eyes open)
-      fillRect(4, 2, 8, 2, hColor);
-      fillRect(3, 3, 6, 1, hColor);
-      fillRect(10, 3, 3, 1, hColor);
-      fill(3, 4, hColor); fill(12, 4, hColor);
-    } else if (hairStyle === 'fluffy') {
-      // Fluffy Curly Top (High volume on top - Eyes open)
       fillRect(4, 1, 8, 3, hColor);
-      fill(3, 2, hColor); fill(12, 2, hColor);
-      fill(5, 0, hColor); fill(10, 0, hColor);
-    } else if (hairStyle === 'cap') {
-      // Baseball Cap (Visor at row 4 - Eyes open)
-      fillRect(3, 2, 10, 2, outfitColor);
-      fillRect(2, 4, 12, 1, hDark); // Cap visor
-      fill(7, 1, '#FFFFFF'); // Cap badge
-    } else if (hairStyle === 'bob') {
-      // Cute Bob (Girl)
-      fillRect(4, 2, 8, 3, hColor);
-      fillRect(3, 3, 10, 5, hColor);
-      fillRect(2, 5, 2, 4, hColor);
-      fillRect(12, 5, 2, 4, hColor);
-    } else if (hairStyle === 'long') {
-      // Long Flowing Hair (Girl)
-      fillRect(4, 2, 8, 3, hColor);
-      fillRect(3, 3, 10, 8, hColor);
-      fillRect(2, 5, 2, 7, hColor);
-      fillRect(12, 5, 2, 7, hColor);
-    } else if (hairStyle === 'crop') {
-      // Short Crop
+      fill(3, 0, hColor); fill(6, -1, hColor); fill(9, 0, hColor);
+    } else if (hairStyle === 'slick_back') {
+      fillRect(4, 1, 8, 3, hColor);
+      fillRect(3, 2, 10, 2, hColor);
+    } else if (hairStyle === 'crew_cut') {
       fillRect(4, 2, 8, 2, hColor);
-      fillRect(3, 3, 10, 1, hColor);
+    } else if (hairStyle === 'side_part') {
+      fillRect(4, 2, 8, 2, hColor);
+    } else if (hairStyle === 'fluffy') {
+      fillRect(3, 1, 10, 3, hColor);
+      fill(2, 2, hColor); fill(13, 2, hColor);
+    } else if (hairStyle === 'cap') {
+      fillRect(3, 1, 10, 3, outfitColor);
+      fillRect(2, 4, 12, 1, outlineColor); // Cap visor
+      fill(7, 1, '#FFFFFF');
     } else {
-      // Default Twin Tails (Girl)
-      fillRect(4, 2, 8, 3, hColor);
-      fillRect(5, 3, 6, 2, hColor);
-      // Left Tail
-      fillRect(1, 4, 3, 6, hColor);
-      fill(2, 3, '#FF4466'); // Ribbon left
-      // Right Tail
-      fillRect(12, 4, 3, 6, hColor);
-      fill(13, 3, '#FF4466'); // Ribbon right
+      // Long / Bob / Twin Tails / Default Girl Hair:
+      // Top hair dome (Rows 2..3)
+      fillRect(4, 2, 8, 2, hColor);
+      // Small front fringe/bangs at top corners of forehead (Row 4)
+      fill(4, 4, hColor);
+      fill(11, 4, hColor);
+    }
+
+    // Outer Top Hair Outline (Row 1)
+    if (hairStyle !== 'cap') {
+      fillRect(4, 1, 8, 1, outlineColor);
+      fill(3, 2, outlineColor); fill(12, 2, outlineColor);
     }
 
     // --- ACCESSORIES ---

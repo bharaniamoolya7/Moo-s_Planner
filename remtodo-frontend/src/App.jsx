@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Welcome from './pages/Welcome';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -17,6 +18,7 @@ import CalendarPage from './pages/CalendarPage';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Progress from './pages/Progress';
+import DocumentVault from './pages/DocumentVault';
 import AppLayout from './layouts/AppLayout';
 import './App.css';
 
@@ -37,37 +39,40 @@ function PublicRoute({ children }) {
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <ToastProvider>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Navigate to="/welcome" replace />} />
-            <Route path="/welcome" element={<PublicRoute><Welcome /></PublicRoute>} />
-            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-            <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
-            <Route path="/avatar-setup" element={<AvatarSetup />} />
+      <ThemeProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Navigate to="/welcome" replace />} />
+              <Route path="/welcome" element={<PublicRoute><Welcome /></PublicRoute>} />
+              <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+              <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+              <Route path="/avatar-setup" element={<AvatarSetup />} />
 
-            {/* Protected routes inside AppLayout */}
-            <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="tasks" element={<Tasks />} />
-              <Route path="notes" element={<Notes />} />
-              <Route path="reminders" element={<Reminders />} />
-              <Route path="learning" element={<LearningHub />} />
-              <Route path="coding" element={<CodingLab />} />
-              <Route path="goals" element={<Goals />} />
-              <Route path="projects" element={<Projects />} />
-              <Route path="calendar" element={<CalendarPage />} />
-              <Route path="progress" element={<Progress />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
+              {/* Protected routes inside AppLayout */}
+              <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="tasks" element={<Tasks />} />
+                <Route path="notes" element={<Notes />} />
+                <Route path="reminders" element={<Reminders />} />
+                <Route path="vault" element={<DocumentVault />} />
+                <Route path="learning" element={<LearningHub />} />
+                <Route path="coding" element={<CodingLab />} />
+                <Route path="goals" element={<Goals />} />
+                <Route path="projects" element={<Projects />} />
+                <Route path="calendar" element={<CalendarPage />} />
+                <Route path="progress" element={<Progress />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/welcome" replace />} />
-          </Routes>
-        </ToastProvider>
-      </AuthProvider>
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/welcome" replace />} />
+            </Routes>
+          </ToastProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

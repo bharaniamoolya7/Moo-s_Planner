@@ -5,8 +5,8 @@
    ═══════════════════════════════════════════════════════ */
 
 /* CSS Variables / Design Tokens */
-:root {
-  /* Colors */
+:root, [data-theme="strawberry"] {
+  /* Colors - Strawberry Pink (Default) */
   --bg-cream: #F5F0DC;
   --bg-cream-light: #FAF7EB;
   --pink-primary: #FFB5C2;
@@ -32,28 +32,146 @@
   --shadow-pixel: 3px 3px 0px rgba(74, 55, 40, 0.15);
   --shadow-card: 2px 2px 0px rgba(74, 55, 40, 0.1);
 
-  /* Typography */
   --font-pixel: 'Press Start 2P', monospace;
   --font-retro: 'VT323', monospace;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-
-  /* Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-2xl: 48px;
-
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-pixel: 2px;
-
-  /* Sidebar */
+  --space-xs: 4px; --space-sm: 8px; --space-md: 16px; --space-lg: 24px; --space-xl: 32px; --space-2xl: 48px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pixel: 2px;
   --sidebar-width: 200px;
 }
+
+[data-theme="matcha"] {
+  --bg-cream: #EBF3EA;
+  --bg-cream-light: #F4FAF3;
+  --pink-primary: #A2C499;
+  --pink-light: #C5E0BD;
+  --pink-soft: #F0F7EE;
+  --pink-header: #8BB881;
+  --mauve: #4E6E4C;
+  --mauve-dark: #3B573A;
+  --mauve-hover: #2C452B;
+  --brown-text: #2D3A2B;
+  --brown-light: #4A5B48;
+  --brown-muted: #7E947B;
+  --white: #FFFFFF;
+  --white-soft: #F8FCF8;
+  --border-dark: #2D3A2B;
+  --border-light: #C0D6BC;
+  --border-pink: #8BB881;
+  --shadow-pixel: 3px 3px 0px rgba(45, 58, 43, 0.15);
+  --shadow-card: 2px 2px 0px rgba(45, 58, 43, 0.1);
+}
+
+[data-theme="midnight"] {
+  --bg-cream: #14121E;
+  --bg-cream-light: #1C192B;
+  --pink-primary: #9D72FF;
+  --pink-light: #BCA4FF;
+  --pink-soft: #292342;
+  --pink-header: #8247FF;
+  --mauve: #A675FF;
+  --mauve-dark: #7C45EA;
+  --mauve-hover: #6332CC;
+  --brown-text: #F3EEFF;
+  --brown-light: #CBC2E6;
+  --brown-muted: #8E84B0;
+  --white: #221D38;
+  --white-soft: #2A2444;
+  --border-dark: #6C5B99;
+  --border-light: #3D3559;
+  --border-pink: #9D72FF;
+  --shadow-pixel: 3px 3px 0px rgba(0, 0, 0, 0.4);
+  --shadow-card: 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="cyberpunk"] {
+  --bg-cream: #0B0E14;
+  --bg-cream-light: #141923;
+  --pink-primary: #06B6D4;
+  --pink-light: #67E8F9;
+  --pink-soft: #162E3B;
+  --pink-header: #EC4899;
+  --mauve: #F43F5E;
+  --mauve-dark: #E11D48;
+  --mauve-hover: #BE123C;
+  --brown-text: #E2E8F0;
+  --brown-light: #94A3B8;
+  --brown-muted: #64748B;
+  --white: #1A2332;
+  --white-soft: #243044;
+  --border-dark: #00F0FF;
+  --border-light: #334155;
+  --border-pink: #FF007A;
+  --shadow-pixel: 3px 3px 0px rgba(0, 240, 255, 0.35);
+  --shadow-card: 2px 2px 0px rgba(236, 72, 153, 0.25);
+}
+
+[data-theme="gameboy"] {
+  --bg-cream: #CADC9F;
+  --bg-cream-light: #DCEBB5;
+  --pink-primary: #8BAC0F;
+  --pink-light: #9BBC0F;
+  --pink-soft: #E0F8CF;
+  --pink-header: #739600;
+  --mauve: #306230;
+  --mauve-dark: #0F380F;
+  --mauve-hover: #082408;
+  --brown-text: #0F380F;
+  --brown-light: #306230;
+  --brown-muted: #537E53;
+  --white: #E0F8CF;
+  --white-soft: #D0E8BF;
+  --border-dark: #0F380F;
+  --border-light: #8BAC0F;
+  --border-pink: #306230;
+  --shadow-pixel: 3px 3px 0px rgba(15, 56, 15, 0.25);
+  --shadow-card: 2px 2px 0px rgba(15, 56, 15, 0.15);
+}
+
+[data-theme="ocean"] {
+  --bg-cream: #EBF4F6;
+  --bg-cream-light: #F4F9FA;
+  --pink-primary: #86C5DA;
+  --pink-light: #B7E0EE;
+  --pink-soft: #EEF7FA;
+  --pink-header: #65B3CE;
+  --mauve: #2B6CB0;
+  --mauve-dark: #1E4E8C;
+  --mauve-hover: #153766;
+  --brown-text: #1E293B;
+  --brown-light: #475569;
+  --brown-muted: #788A9C;
+  --white: #FFFFFF;
+  --white-soft: #F8FCFD;
+  --border-dark: #1E293B;
+  --border-light: #CBD5E1;
+  --border-pink: #65B3CE;
+  --shadow-pixel: 3px 3px 0px rgba(30, 41, 59, 0.15);
+  --shadow-card: 2px 2px 0px rgba(30, 41, 59, 0.1);
+}
+
+[data-theme="sunset"] {
+  --bg-cream: #FDF3E7;
+  --bg-cream-light: #FFF9F2;
+  --pink-primary: #FFB088;
+  --pink-light: #FFD0B8;
+  --pink-soft: #FFF4EE;
+  --pink-header: #FF9B6A;
+  --mauve: #D95D39;
+  --mauve-dark: #B84321;
+  --mauve-hover: #943216;
+  --brown-text: #42281D;
+  --brown-light: #6E4E40;
+  --brown-muted: #A38577;
+  --white: #FFFFFF;
+  --white-soft: #FFFDFB;
+  --border-dark: #42281D;
+  --border-light: #E8D3C5;
+  --border-pink: #FF9B6A;
+  --shadow-pixel: 3px 3px 0px rgba(66, 40, 29, 0.15);
+  --shadow-card: 2px 2px 0px rgba(66, 40, 29, 0.1);
+}
+
 
 /* Reset */
 *,

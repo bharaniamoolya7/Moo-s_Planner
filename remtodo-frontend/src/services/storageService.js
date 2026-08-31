@@ -118,7 +118,7 @@ export const storageService = {
         
         // Merge with local items that might only exist locally
         const serverIds = new Set(serverItems.map(i => String(i.id)));
-        const unsyncedLocals = localData.filter(i => (String(i.id).startsWith('seed-') || String(i.id).startsWith('local-')) && !String(i.id).startsWith('seed-proj-'));
+        const unsyncedLocals = localData.filter(i => (String(i.id).startsWith('seed-') || String(i.id).startsWith('local-')) && !String(i.id).startsWith('seed-proj-') && !String(i.id).startsWith('seed-roadmap-'));
         
         const combined = [...serverItems, ...unsyncedLocals.filter(i => !serverIds.has(String(i.id)))];
         localStorage.setItem(storageKey, JSON.stringify(combined));

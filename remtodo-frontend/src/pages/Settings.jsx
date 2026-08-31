@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import PixelAvatar, { AVATAR_OPTIONS } from '../components/PixelAvatar';
+import { ThemeGallery } from '../components/ThemeSelector';
 import api from '../services/api';
 
 export default function Settings() {
@@ -35,12 +36,23 @@ export default function Settings() {
   };
 
   return (
-    <div className="tasks-page" style={{ maxWidth: 700 }}>
+    <div className="tasks-page" style={{ maxWidth: 800 }}>
       <div className="page-header">
         <h1 className="page-title">⚙ Settings</h1>
         <button className="btn btn-primary btn-sm" onClick={handleSave} disabled={saving}>
           {saving ? 'Saving...' : 'Save ♡'}
         </button>
+      </div>
+
+      {/* Theme selection card */}
+      <div className="pixel-card" style={{ marginBottom: 20 }}>
+        <div className="pixel-card-header">🎨 THEME SELECTION</div>
+        <div className="pixel-card-body">
+          <p style={{ fontSize: 13, color: 'var(--brown-muted)', marginBottom: 16 }}>
+            Customize your moo'splanner visual experience with distinct color themes.
+          </p>
+          <ThemeGallery />
+        </div>
       </div>
 
       {/* Profile settings */}

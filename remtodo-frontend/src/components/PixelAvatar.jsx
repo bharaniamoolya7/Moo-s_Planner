@@ -126,8 +126,10 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
       fill(5, 4, '#5E4C56'); fill(10, 4, '#5E4C56');
     }
 
-    // Soft Pink Blush (Row 8)
-    fill(4, 8, '#FFAAA5'); fill(11, 8, '#FFAAA5');
+    // Soft Pink Blush (Row 8) - rendered only for girl character
+    if (gender === 'girl') {
+      fill(4, 8, '#FFAAA5'); fill(11, 8, '#FFAAA5');
+    }
 
     // Lip / Mouth (Row 9)
     fill(7, 9, '#C86A77'); fill(8, 9, '#C86A77');

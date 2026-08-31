@@ -3,11 +3,11 @@ import { useMemo } from 'react';
 export const AVATAR_OPTIONS = {
   GENDERS: ['girl', 'boy'],
   SKIN_COLORS: ['#FFDFC4', '#F0C8A0', '#D89870', '#8D5B4C', '#5C382B'],
-  HAIR_COLORS: ['#FF99B0', '#5A3D31', '#F5D061', '#5B8DEF', '#333333', '#A06CD5'],
-  HAIR_STYLES: ['spiky', 'slick_back', 'crew_cut', 'side_part', 'fluffy', 'cap', 'twin_tails', 'bob', 'long'],
-  OUTFIT_COLORS: ['#FFB5C2', '#A4C8E1', '#F5E6A4', '#B8D8BA', '#E0D4F5'],
+  HAIR_COLORS: ['#2D232A', '#333333', '#5A3D31', '#FF99B0', '#F5D061', '#5B8DEF', '#A06CD5'],
+  HAIR_STYLES: ['long', 'bob', 'twin_tails', 'spiky', 'slick_back', 'crew_cut', 'side_part', 'fluffy', 'cap'],
+  OUTFIT_COLORS: ['#262427', '#FFB5C2', '#A4C8E1', '#F5E6A4', '#B8D8BA', '#E0D4F5'],
   EYE_STYLES: ['sparkle', 'happy', 'wink', 'cool'],
-  ACCESSORIES: ['bow', 'glasses', 'blush_star', 'none']
+  ACCESSORIES: ['none', 'bow', 'glasses', 'blush_star']
 };
 
 export default function PixelAvatar({ config = {}, size = 80, onClick, className = '' }) {
@@ -48,8 +48,12 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
       fillRect(3, 3, 1, 4, hColor);  // Ear-length side hair left
       fillRect(12, 3, 1, 4, hColor); // Ear-length side hair right
     } else if (hairStyle === 'long') {
-      fillRect(2, 3, 12, 10, hColor); // Long hair falling behind back
-      fillRect(1, 5, 14, 8, hColor);  // Wide hair backdrop
+      // Wavy long hair falling behind shoulders & framing sides (matching reference image)
+      fillRect(2, 2, 12, 12, hColor); // Full hair volume
+      fillRect(1, 4, 14, 10, hColor); // Wide side waves
+      // Bottom wavy tips
+      fill(1, 14, hColor); fill(3, 14, hColor);
+      fill(12, 14, hColor); fill(14, 14, hColor);
     } else if (hairStyle === 'bob') {
       fillRect(2, 3, 12, 7, hColor);  // Bob hair behind back
       fillRect(1, 5, 14, 5, hColor);
@@ -65,7 +69,7 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
     // Neck
     fillRect(7, 10, 2, 1, skinColor);
 
-    // Outfit / Shoulders
+    // Outfit / Dress
     fillRect(4, 11, 8, 4, outfitColor);
     fillRect(3, 12, 10, 3, outfitColor);
     // Outfit outline
@@ -73,16 +77,24 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
     fillRect(12, 11, 1, 4, outlineColor);
     fillRect(4, 15, 8, 1, outlineColor);
 
-    // Collar / Inner detail
+    // White Ribbon Collar & Cuffs (Matching reference image black dress)
     if (gender === 'girl') {
-      fillRect(7, 11, 2, 2, '#FFFFFF'); // White collar
+      fillRect(6, 11, 4, 1, '#FFFFFF'); // White collar
+      fill(7, 12, '#FFFFFF'); fill(8, 12, '#FFFFFF'); // Ribbon knot
+      fill(7, 13, '#FFFFFF'); fill(8, 14, '#FFFFFF'); // Draping ribbon tail
+      fill(3, 13, '#FFFFFF'); fill(12, 13, '#FFFFFF'); // White sleeve cuffs
     } else {
       fillRect(7, 11, 2, 3, outlineColor); // Tie / Hoodie zip
       fillRect(7, 11, 2, 1, '#FFFFFF');
     }
 
     // --- 3. FACE & HEAD BASE (Drawn OVER back hair so face & cheeks are clean) ---
-    fillRect(4, 4, 8, 6, skinColor); // Clean forehead & face: rows 4..9, cols 4..11
+    fillRect(4, 4, 8, 6, skinColor); // Clean face: rows 4..9, cols 4..11
+
+    // Pearl Earrings (White pearls on sides - Row 7)
+    if (gender === 'girl') {
+      fill(3, 7, '#FFFFFF'); fill(12, 7, '#FFFFFF');
+    }
 
     // Side face outline (Jawline)
     fill(4, 9, outlineColor); fill(11, 9, outlineColor);
@@ -98,20 +110,29 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
     } else if (eyeStyle === 'cool') {
       fillRect(4, 6, 8, 2, outlineColor);
       fill(5, 6, '#FFFFFF'); fill(9, 6, '#FFFFFF');
-    } else { // Sparkle cute eyes
+    } else { // Large anime sparkle eyes (Matching reference image)
+      // Top eyeliner / lash
+      fillRect(5, 5, 2, 1, outlineColor);
+      fillRect(9, 5, 2, 1, outlineColor);
+      // Eye pupils & sparkle catchlight
       fill(5, 6, outlineColor); fill(5, 7, outlineColor);
       fill(6, 6, '#FFFFFF'); fill(6, 7, outlineColor);
       fill(9, 6, outlineColor); fill(9, 7, outlineColor);
       fill(10, 6, '#FFFFFF'); fill(10, 7, outlineColor);
     }
 
-    // Cute Blush (Row 8)
-    fill(4, 8, '#FF8899'); fill(11, 8, '#FF8899');
+    // Delicate Eyebrows (Row 4)
+    if (gender === 'girl') {
+      fill(5, 4, '#5E4C56'); fill(10, 4, '#5E4C56');
+    }
 
-    // Mouth (Row 9)
-    fill(7, 9, '#E85D75'); fill(8, 9, '#E85D75');
+    // Soft Pink Blush (Row 8)
+    fill(4, 8, '#FFAAA5'); fill(11, 8, '#FFAAA5');
 
-    // --- 5. TOP HAIR DOME & SMALL FRONT FRINGE/BANGS ---
+    // Lip / Mouth (Row 9)
+    fill(7, 9, '#C86A77'); fill(8, 9, '#C86A77');
+
+    // --- 5. TOP HAIR DOME & MIDDLE PART BANG ---
     if (hairStyle === 'spiky') {
       fillRect(4, 1, 8, 3, hColor);
       fill(3, 0, hColor); fill(6, -1, hColor); fill(9, 0, hColor);
@@ -133,9 +154,12 @@ export default function PixelAvatar({ config = {}, size = 80, onClick, className
       // Long / Bob / Twin Tails / Default Girl Hair:
       // Top hair dome (Rows 2..3)
       fillRect(4, 2, 8, 2, hColor);
-      // Small front fringe/bangs at top corners of forehead (Row 4)
-      fill(4, 4, hColor);
-      fill(11, 4, hColor);
+      // Middle Part line at top
+      fill(7, 2, outlineColor); fill(8, 2, outlineColor);
+      // Small side curtain bangs (Row 4)
+      fill(4, 4, hColor); fill(11, 4, hColor);
+      // Delicate single front strand bang (Matching reference image)
+      fill(7, 3, hColor); fill(7, 4, hColor);
     }
 
     // Outer Top Hair Outline (Row 1)

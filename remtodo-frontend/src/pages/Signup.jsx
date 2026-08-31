@@ -17,11 +17,11 @@ export default function Signup() {
   const [avatarConfig, setAvatarConfig] = useState({
     gender: 'girl',
     skinColor: AVATAR_OPTIONS.SKIN_COLORS[0],
-    hairColor: '#333333', // Dark black hair as shown in screenshot
-    hairStyle: 'bob',     // Bob style as shown in screenshot
-    outfitColor: '#E0D4F5',
-    eyeStyle: 'sparkle',  // Sparkle eyes as shown in screenshot
-    accessory: 'bow',     // Pink hair bow as shown in screenshot
+    hairColor: '#2D232A', // Dark charcoal/black hair like reference image
+    hairStyle: 'long',    // Long flowing hair like reference image
+    outfitColor: '#262427', // Black dress with white ribbon tie like reference image
+    eyeStyle: 'sparkle',  // Anime sparkle eyes like reference image
+    accessory: 'none',
   });
 
   const { signup, updateUser } = useAuth();

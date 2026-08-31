@@ -61,20 +61,17 @@ export default function AppLayout() {
         <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
           {mobileMenuOpen ? '✕' : '☰'}
         </button>
+        <span 
+          className="mobile-brand"
+          onClick={handleStartEdit}
+          title="Click to rename your planner"
+          style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+        >
+          {plannerName}
+          <span style={{ fontSize: '10px', opacity: 0.6 }}>✏️</span>
+        </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <img src="/logo.png" alt="moo'splanner logo" className="brand-logo-img-sm" />
-          <span 
-            className="mobile-brand"
-            onClick={handleStartEdit}
-            title="Click to rename your planner"
-            style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-          >
-            {plannerName}
-            <span style={{ fontSize: '10px', opacity: 0.6 }}>✏️</span>
-          </span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '100px' }}>
+          <div style={{ width: '120px' }}>
             <QuickThemeToggle />
           </div>
           <div className="mobile-avatar" onClick={() => navigate('/profile')}>
@@ -87,9 +84,6 @@ export default function AppLayout() {
       <aside className={`sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         {/* Profile section */}
         <div className="sidebar-profile">
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
-            <img src="/logo.png" alt="moo'splanner logo" className="brand-logo-img-sidebar" onClick={() => navigate('/dashboard')} title="moo'splanner" />
-          </div>
           <div 
             className="sidebar-avatar" 
             onClick={() => { navigate('/profile'); setMobileMenuOpen(false); }}

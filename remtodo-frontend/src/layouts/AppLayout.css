@@ -21,34 +21,10 @@
 }
 
 .sidebar-profile {
-  padding: 16px 16px 14px;
+  padding: 20px 16px 16px;
   text-align: center;
   cursor: pointer;
   border-bottom: 1px solid var(--border-light);
-}
-
-.brand-logo-img-sidebar {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  border: 2px solid var(--border-dark);
-  box-shadow: 2px 2px 0px rgba(74, 55, 40, 0.15);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  object-fit: cover;
-}
-
-.brand-logo-img-sidebar:hover {
-  transform: scale(1.05);
-  box-shadow: 3px 3px 0px rgba(74, 55, 40, 0.2);
-}
-
-.brand-logo-img-sm {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1.5px solid var(--border-dark);
-  object-fit: cover;
 }
 
 .sidebar-avatar {

@@ -139,17 +139,8 @@ export default function Signup() {
 
             {step === 1 ? (
               <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                  <img 
-                    src="/logo.png" 
-                    alt="moo'splanner logo" 
-                    style={{ width: 52, height: 52, borderRadius: 12, border: '2px solid var(--border-dark)', boxShadow: '2px 2px 0px rgba(74, 55, 40, 0.15)', objectFit: 'cover' }} 
-                  />
-                  <div>
-                    <h2 className="signup-heading" style={{ margin: 0, textAlign: 'left' }}>Welcome to moo'splanner</h2>
-                    <p className="signup-subheading" style={{ margin: 0, textAlign: 'left' }}>Let&apos;s set up your cozy productivity journal.</p>
-                  </div>
-                </div>
+                <h2 className="signup-heading">Welcome to moo'splanner</h2>
+                <p className="signup-subheading">Let&apos;s set up your cozy productivity journal.</p>
 
                 <form onSubmit={handleNextStep}>
                   <div className="input-group">

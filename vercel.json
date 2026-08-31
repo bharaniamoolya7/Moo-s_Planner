@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd remtodo-frontend && npm run build",
+  "outputDirectory": "remtodo-frontend/dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

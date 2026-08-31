@@ -33,12 +33,13 @@ export default function Welcome() {
       {/* Main card */}
       <div className="welcome-card">
         <div className="welcome-card-inner">
-          {/* Bell icon with heart */}
+          {/* Website Logo */}
           <div className="welcome-icon-wrapper">
-            <div className="welcome-bell-circle">
-              <span className="welcome-bell">🔔</span>
-            </div>
-            <span className="welcome-heart-badge">💜</span>
+            <img 
+              src="/logo.png" 
+              alt="moo'splanner logo" 
+              style={{ width: 88, height: 88, borderRadius: 18, border: '3px solid var(--border-dark)', boxShadow: '4px 4px 0px rgba(74, 55, 40, 0.2)', objectFit: 'cover' }} 
+            />
           </div>
 
           {/* Brand */}

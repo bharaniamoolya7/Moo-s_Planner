@@ -44,9 +44,11 @@ export default function Login() {
 
         <div className="login-content">
           <div className="login-icon-area">
-            <div className="welcome-bell-circle" style={{ width: 64, height: 64 }}>
-              <span style={{ fontSize: 28 }}>🔔</span>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="moo'splanner logo" 
+              style={{ width: 72, height: 72, borderRadius: 16, border: '2.5px solid var(--border-dark)', boxShadow: '3px 3px 0px rgba(74, 55, 40, 0.15)', objectFit: 'cover' }} 
+            />
           </div>
 
           <h2 className="signup-heading">Welcome back!</h2>

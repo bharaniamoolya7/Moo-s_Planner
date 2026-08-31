@@ -30,6 +30,7 @@ public class ProjectController {
             existing.setStatus(item.getStatus());
             existing.setProgress(item.getProgress());
             existing.setNotes(item.getNotes());
+            existing.setLinks(item.getLinks());
             return ResponseEntity.ok(repository.save(existing));
         }).orElse(ResponseEntity.notFound().build());
     }

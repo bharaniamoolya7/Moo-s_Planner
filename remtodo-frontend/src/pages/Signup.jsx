@@ -50,7 +50,7 @@ export default function Signup() {
   const handleSignup = async () => {
     setLoading(true);
     setTheme('strawberry');
-    const result = await signup(displayName, email, password);
+    const result = await signup(displayName, email, password, avatarConfig);
     if (result.success) {
       setTheme('strawberry');
       localStorage.setItem('moosplanner_theme', 'strawberry');

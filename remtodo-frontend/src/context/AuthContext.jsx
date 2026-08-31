@@ -41,10 +41,11 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const localUsers = JSON.parse(localStorage.getItem('moosplanner_local_users') || localStorage.getItem('remtodo_local_users') || '[]');
-    const foundLocal = localUsers.find(u => u.email === email && u.password === password);
+    const cleanEmail = email.trim().toLowerCase();
+    const foundLocal = localUsers.find(u => u.email && u.email.toLowerCase() === cleanEmail);
 
     try {
-      const res = await api.post('/api/auth/login', { email, password });
+      const res = await api.post('/api/auth/login', { email: cleanEmail, password });
       const userData = res.data;
       if (userData) {
         setUser(userData);
@@ -52,58 +53,51 @@ export function AuthProvider({ children }) {
         return { success: true, user: userData };
       }
     } catch (err) {
+      // If backend error response exists (e.g. 401 Bad Credentials or 404 User Not Found)
+      if (err.response && (err.response.status === 401 || err.response.status === 404)) {
+        return { success: false, error: typeof err.response.data === 'string' ? err.response.data : 'Invalid email or password' };
+      }
+
+      // Offline / LocalStorage Mode: Validate against created local accounts
       if (foundLocal) {
-        setUser(foundLocal);
-        localStorage.setItem('moosplanner_user', JSON.stringify(foundLocal));
-        return { success: true, user: foundLocal };
+        if (foundLocal.password === password) {
+          setUser(foundLocal);
+          localStorage.setItem('moosplanner_user', JSON.stringify(foundLocal));
+          return { success: true, user: foundLocal };
+        } else {
+          return { success: false, error: 'Incorrect password' };
+        }
       }
 
-      // If backend error response exists (e.g. 401 Bad Credentials)
-      if (err.response && err.response.status === 401) {
-        return { success: false, error: err.response.data || 'Invalid email or password' };
-      }
-
-      // If backend is offline, create/restore a stable offline session for this email
-      const stableId = getStableUserId(email);
-      const fallbackUser = {
-        id: stableId,
-        displayName: email.split('@')[0],
-        email,
-        password,
-        avatarConfig: { gender: 'girl', hairStyle: 'twin_tails' }
-      };
-
-      const updatedLocal = [...localUsers.filter(u => u.email !== email), fallbackUser];
-      localStorage.setItem('moosplanner_local_users', JSON.stringify(updatedLocal));
-
-      setUser(fallbackUser);
-      localStorage.setItem('moosplanner_user', JSON.stringify(fallbackUser));
-      return { success: true, user: fallbackUser };
+      // No account found for this email
+      return { success: false, error: 'No account found with this email. Please create an account first!' };
     }
   };
 
-  const signup = async (displayName, email, password) => {
-    const stableId = getStableUserId(email);
+  const signup = async (displayName, email, password, avatarConfig) => {
+    const cleanEmail = email.trim().toLowerCase();
+    const stableId = getStableUserId(cleanEmail);
     const newUser = {
       id: stableId,
       displayName,
-      email,
+      email: cleanEmail,
       password,
-      avatarConfig: { gender: 'girl', hairStyle: 'twin_tails' }
+      avatarConfig: avatarConfig || { gender: 'girl', hairStyle: 'bob' }
     };
 
+    // Save to localUsers list immediately so login works for created accounts
+    const localUsers = JSON.parse(localStorage.getItem('moosplanner_local_users') || localStorage.getItem('remtodo_local_users') || '[]');
+    const updatedLocal = [...localUsers.filter(u => u.email && u.email.toLowerCase() !== cleanEmail), newUser];
+    localStorage.setItem('moosplanner_local_users', JSON.stringify(updatedLocal));
+
     try {
-      const res = await api.post('/api/auth/signup', { displayName, email, password });
+      const res = await api.post('/api/auth/signup', { displayName, email: cleanEmail, password });
       const userData = res.data || newUser;
       setUser(userData);
       localStorage.setItem('moosplanner_user', JSON.stringify(userData));
       return { success: true, user: userData };
     } catch (err) {
-      // Backend is offline or database error - enable smooth local mode
-      const localUsers = JSON.parse(localStorage.getItem('moosplanner_local_users') || localStorage.getItem('remtodo_local_users') || '[]');
-      const updatedLocal = [...localUsers.filter(u => u.email !== email), newUser];
-      localStorage.setItem('moosplanner_local_users', JSON.stringify(updatedLocal));
-
+      // Backend is offline - proceed with created local account
       setUser(newUser);
       localStorage.setItem('moosplanner_user', JSON.stringify(newUser));
       return { success: true, user: newUser };
